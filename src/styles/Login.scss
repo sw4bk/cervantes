@@ -1,0 +1,21 @@
+@import './variables.scss';
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: $spacing-unit * 2;
+}
+
+.login-paper {
+  padding: $spacing-unit * 4;
+  border-radius: 12px;
+}
+
+.login-title {
+  font-weight: 600;
+  color: $primary-color;
+  margin-bottom: $spacing-unit !important;
+}
