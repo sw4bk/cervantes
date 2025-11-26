@@ -1,8 +1,26 @@
 // Cliente base HTTP para comunicación con la API de Habitad
 
-// En desarrollo, usar ruta relativa para que funcione con el proxy de Vite
-// En producción, cambiar a la URL completa si es necesario
-const API_BASE_URL = '/api';
+// Configuración de la URL base de la API
+// En desarrollo: usar ruta relativa para que funcione con el proxy de Vite
+// En producción: usar la URL completa de la API
+const getApiBaseUrl = () => {
+  // Si hay una variable de entorno definida, usarla
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  
+  // Si estamos en desarrollo (modo dev), usar ruta relativa para el proxy
+  if (import.meta.env.DEV) {
+    return '/api';
+  }
+  
+  // En producción, usar la URL completa de la API
+  // Por defecto: http://habitat.bromteck.com/api
+  // Si tu API usa HTTPS, cambia esto a https://habitat.bromteck.com/api
+  return 'http://habitat.bromteck.com/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 const TOKEN_STORAGE_KEY = 'habitat_auth_token';
 const LOGIN_ENDPOINT = '/rest-auth/login/';
 
