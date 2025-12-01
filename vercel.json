@@ -2,15 +2,15 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "http://habitat.bromteck.com/:path*"
+      "destination": "https://habitat.bromteck.com/api/:path*"
     },
     {
       "source": "/database/:path*",
-      "destination": "http://habitat.bromteck.com/database/:path*"
+      "destination": "https://habitat.bromteck.com/database/:path*"
     },
     {
       "source": "/dashboard/products/:path*",
-      "destination": "http://habitat.bromteck.com/dashboard/products/:path*"
+      "destination": "https://habitat.bromteck.com/dashboard/products/:path*"
     }
   ]
 }
