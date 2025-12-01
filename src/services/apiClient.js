@@ -206,28 +206,29 @@ async function getCsrfToken() {
       }
     }
     
-    // Si no existe en las cookies, hacer una petición GET para obtenerlo
-    // Django REST normalmente lo devuelve en una cookie o header
-    const response = await fetch(`${API_BASE_URL}/rest-auth/login/`, {
-      method: 'GET',
-      credentials: 'include',
-    });
-    
-    // Después de la petición, verificar las cookies nuevamente
-    const cookiesAfter = document.cookie.split(';');
-    for (let cookie of cookiesAfter) {
-      const [name, value] = cookie.trim().split('=');
-      if (name === 'csrftoken' && value) {
-        return decodeURIComponent(value);
+    // Si no existe en las cookies, intentar obtenerlo desde el endpoint de CSRF
+    // Algunos backends tienen un endpoint específico para obtener el token CSRF
+    try {
+      const response = await fetch(`${API_BASE_URL}/rest-auth/csrf/`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+      
+      if (response.ok) {
+        const cookiesAfter = document.cookie.split(';');
+        for (let cookie of cookiesAfter) {
+          const [name, value] = cookie.trim().split('=');
+          if (name === 'csrftoken' && value) {
+            return decodeURIComponent(value);
+          }
+        }
       }
+    } catch (csrfError) {
+      // Si el endpoint de CSRF no existe, continuar sin error
+      console.debug('Endpoint de CSRF no disponible, continuando sin token CSRF');
     }
     
-    // También verificar si viene en el header X-CSRFToken
-    const csrfHeader = response.headers.get('X-CSRFToken');
-    if (csrfHeader) {
-      return csrfHeader;
-    }
-    
+    // Si no se pudo obtener, retornar null (algunas APIs no requieren CSRF para autenticación por token)
     return null;
   } catch (error) {
     console.warn('No se pudo obtener el token CSRF:', error);
