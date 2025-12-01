@@ -2,16 +2,18 @@
 
 // Configuración de la URL base de la API
 // En desarrollo: usar ruta relativa para que funcione con el proxy de Vite
-// En producción: usar la URL completa de la API
+// En producción: usar la URL completa de la API directamente
 const getApiBaseUrl = () => {
   // Si hay una variable de entorno definida, usarla
   if (import.meta.env.VITE_API_BASE_URL) {
     return import.meta.env.VITE_API_BASE_URL;
   }
   
-  // En producción y desarrollo, usar ruta relativa para el proxy
-  // En desarrollo: Vite proxy maneja /api
-  // En producción: Vercel proxy maneja /api (configurado en vercel.json)
+  // En desarrollo y producción, usar ruta relativa para el proxy
+  // En desarrollo: Vite proxy maneja /api -> http://habitat.bromteck.com
+  // En producción: Vercel rewrite maneja /api -> http://habitat.bromteck.com/api
+  // Esto evita problemas de mixed content (HTTPS -> HTTP) porque el proxy/rewrite
+  // hace la petición HTTP desde el servidor, no desde el navegador
   return '/api';
 };
 
