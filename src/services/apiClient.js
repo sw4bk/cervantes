@@ -9,15 +9,10 @@ const getApiBaseUrl = () => {
     return import.meta.env.VITE_API_BASE_URL;
   }
   
-  // Si estamos en desarrollo (modo dev), usar ruta relativa para el proxy
-  if (import.meta.env.DEV) {
-    return '/api';
-  }
-  
-  // En producción, usar la URL completa de la API
-  // Por defecto: http://habitat.bromteck.com/api
-  // Si tu API usa HTTPS, cambia esto a https://habitat.bromteck.com/api
-  return 'http://habitat.bromteck.com/api';
+  // En producción y desarrollo, usar ruta relativa para el proxy
+  // En desarrollo: Vite proxy maneja /api
+  // En producción: Vercel proxy maneja /api (configurado en vercel.json)
+  return '/api';
 };
 
 const API_BASE_URL = getApiBaseUrl();
